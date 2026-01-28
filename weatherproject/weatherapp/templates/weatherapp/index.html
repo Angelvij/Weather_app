@@ -1,0 +1,133 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
+      rel="stylesheet"
+    />
+</head>
+
+<body style="
+    background-image: url('{{ background_image }}');
+    <title>Weather App</title>
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      body {
+        background-image: url('{{ background_image }}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+      }
+    </style>
+    <div class="bg-gradient"></div>
+    <div class="main-center">
+      <div class="weather-card">
+        <h1 class="heading"><i class="fa-solid fa-cloud-sun"></i> Weather App</h1>
+        <form method="POST" id="searchForm">
+          {% csrf_token %}
+          <input type="text" name="city" id="cityInput" placeholder="Enter City">
+          <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+        </form>
+        <div class="weather-info">
+          <div class="weather-left">
+            <h2 class="temp">{{ temp }}&#176; C</h2>
+            <h2 class="city">{{ city }}</h2>
+          </div>
+          <div class="weather-right">
+            <div class="icon">
+              <img src="http://openweathermap.org/img/w/{{ icon }}.png" width="120px" id="weatherIcon">
+            </div>
+            <div class="condition">
+              <p>{{ description }}</p>
+              <p>{{ day }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Animate heading on load
+      document.addEventListener('DOMContentLoaded', function() {
+        const heading = document.querySelector('.heading');
+        heading.style.opacity = '0';
+        heading.style.transform = 'translateY(-30px) scale(1.1)';
+        setTimeout(function() {
+          heading.style.transition = 'all 0.8s cubic-bezier(.68,-0.55,.27,1.55)';
+          heading.style.opacity = '1';
+          heading.style.transform = 'translateY(0) scale(1)';
+        }, 200);
+      });
+      // Input focus effect
+      const cityInput = document.getElementById('cityInput');
+      if(cityInput) {
+        cityInput.addEventListener('focus', function() {
+          cityInput.style.boxShadow = '0 0 18px #667eea';
+        });
+        cityInput.addEventListener('blur', function() {
+          cityInput.style.boxShadow = '';
+        });
+      }
+      // Button ripple effect
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          ripple.style.left = e.offsetX + 'px';
+          ripple.style.top = e.offsetY + 'px';
+          btn.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+        });
+      });
+    </script>
+
+
+{% if exception_occurred %}
+    <script>
+        window.onload = function() {
+            alert("City information is not available to Weather API");
+        }
+    </script>
+{% endif %}
+
+    <script>
+      // Animate heading on load
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.heading').style.transform = 'scale(1.05)';
+        setTimeout(function() {
+          document.querySelector('.heading').style.transform = 'scale(1)';
+        }, 600);
+      });
+      // Add input focus effect
+      const cityInput = document.getElementById('cityInput');
+      cityInput.addEventListener('focus', function() {
+        cityInput.style.boxShadow = '0 0 15px #667eea';
+      });
+      cityInput.addEventListener('blur', function() {
+        cityInput.style.boxShadow = '';
+      });
+      // Button ripple effect
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          ripple.style.left = e.offsetX + 'px';
+          ripple.style.top = e.offsetY + 'px';
+          btn.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+        });
+      });
+    </script>
+</body>
+</html>
